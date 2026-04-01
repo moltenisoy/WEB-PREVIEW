@@ -180,11 +180,17 @@ class ConfigWindow(ctk.CTkToplevel):
 
     def _save(self):
         try:
+            v_hotkey_enabled = self._get_value("hotkey_enabled")
+            v_tray_click = self._get_value("tray_click_enabled")
+            v_mouse_gesture = self._get_value("mouse_gesture_enabled")
+            v_show_domain = self._get_value("show_domain")
+            v_show_time = self._get_value("show_time")
+            v_show_favicon = self._get_value("show_favicon")
             trigger = TriggerConfig(
-                hotkey_enabled=self._get_value("hotkey_enabled") if self._get_value("hotkey_enabled") is not None else True,
+                hotkey_enabled=v_hotkey_enabled if v_hotkey_enabled is not None else True,
                 hotkey_combo=self._get_value("hotkey_combo") or "ctrl+shift+b",
-                tray_click_enabled=self._get_value("tray_click_enabled") if self._get_value("tray_click_enabled") is not None else True,
-                mouse_gesture_enabled=self._get_value("mouse_gesture_enabled") if self._get_value("mouse_gesture_enabled") is not None else False,
+                tray_click_enabled=v_tray_click if v_tray_click is not None else True,
+                mouse_gesture_enabled=v_mouse_gesture if v_mouse_gesture is not None else False,
                 mouse_gesture_type=self._get_value("mouse_gesture_type") or "double_right",
                 desktop_shortcut_enabled=True,
             )
@@ -200,9 +206,9 @@ class ConfigWindow(ctk.CTkToplevel):
                 card_border_radius=self._get_value("card_border_radius") or 12,
                 card_spacing=self._get_value("card_spacing") or 10,
                 font_size=self._get_value("font_size") or 13,
-                show_domain=self._get_value("show_domain") if self._get_value("show_domain") is not None else True,
-                show_time=self._get_value("show_time") if self._get_value("show_time") is not None else True,
-                show_favicon=self._get_value("show_favicon") if self._get_value("show_favicon") is not None else True,
+                show_domain=v_show_domain if v_show_domain is not None else True,
+                show_time=v_show_time if v_show_time is not None else True,
+                show_favicon=v_show_favicon if v_show_favicon is not None else True,
                 trigger=trigger,
             )
             save_config(config)
