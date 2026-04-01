@@ -151,7 +151,7 @@ def obtener_firma_funcion(nodo: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
 
 def es_constante(nombre: str) -> bool:
     """Heurística: un nombre en MAYÚSCULAS_CON_GUIONES es constante."""
-    return nombre.isupper() and not nombre.startswith("_")
+    return len(nombre) > 1 and nombre.isupper() and not nombre.startswith("_")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -419,20 +419,25 @@ def analizar_dependencias_internas(archivos_info: list[InfoArchivo]) -> dict[str
 
 def analizar_dependencias_externas(archivos_info: list[InfoArchivo]) -> dict[str, int]:
     """Cuenta las dependencias externas (librerías de terceros)."""
-    stdlib = {
-        "os", "sys", "ast", "re", "json", "csv", "math", "time", "datetime",
-        "pathlib", "collections", "functools", "itertools", "operator",
-        "typing", "abc", "enum", "dataclasses", "copy", "io", "string",
-        "textwrap", "struct", "hashlib", "hmac", "secrets", "base64",
-        "sqlite3", "subprocess", "threading", "multiprocessing", "queue",
-        "socket", "http", "urllib", "email", "html", "xml", "logging",
-        "unittest", "doctest", "argparse", "configparser", "shutil",
-        "tempfile", "glob", "fnmatch", "stat", "contextlib", "warnings",
-        "traceback", "inspect", "importlib", "pkgutil", "pprint",
-        "platform", "signal", "ctypes", "webbrowser", "uuid",
-        "concurrent", "asyncio", "ssl", "zipfile", "tarfile", "gzip",
-        "pickle", "shelve", "dbm", "winreg", "msvcrt", "winsound",
-    }
+    # Usar sys.stdlib_module_names (Python 3.10+) si disponible; sino, fallback
+    if hasattr(sys, "stdlib_module_names"):
+        stdlib = sys.stdlib_module_names
+    else:
+        stdlib = {
+            "os", "sys", "ast", "re", "json", "csv", "math", "time",
+            "datetime", "pathlib", "collections", "functools", "itertools",
+            "operator", "typing", "abc", "enum", "dataclasses", "copy",
+            "io", "string", "textwrap", "struct", "hashlib", "hmac",
+            "secrets", "base64", "sqlite3", "subprocess", "threading",
+            "multiprocessing", "queue", "socket", "http", "urllib",
+            "email", "html", "xml", "logging", "unittest", "doctest",
+            "argparse", "configparser", "shutil", "tempfile", "glob",
+            "fnmatch", "stat", "contextlib", "warnings", "traceback",
+            "inspect", "importlib", "pkgutil", "pprint", "platform",
+            "signal", "ctypes", "webbrowser", "uuid", "concurrent",
+            "asyncio", "ssl", "zipfile", "tarfile", "gzip", "pickle",
+            "shelve", "dbm", "winreg", "msvcrt", "winsound",
+        }
     modulos_proyecto = set()
     for info in archivos_info:
         modulos_proyecto.add(Path(info.ruta_relativa).stem)
