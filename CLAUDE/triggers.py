@@ -1,4 +1,3 @@
-import threading
 import keyboard
 import mouse
 
@@ -59,7 +58,6 @@ class MouseGestureTrigger(BaseTrigger):
     def __init__(self, callback, gesture_type="double_right"):
         super().__init__(callback)
         self._gesture_type = gesture_type
-        self._last_right = 0
         self._hook_registered = False
 
     def start(self):
@@ -67,11 +65,11 @@ class MouseGestureTrigger(BaseTrigger):
             super().start()
             if not self._hook_registered:
                 if self._gesture_type == "double_right":
-                    mouse.on_double_click(self._on_mouse_event, buttons=("right",))
+                    mouse.on_button(self._on_mouse_event, buttons=("right",), types=("double",))
                 elif self._gesture_type == "middle_click":
                     mouse.on_middle_click(self._on_mouse_event)
                 elif self._gesture_type == "side_button":
-                    mouse.on_button(self._on_mouse_event, buttons=("x",))
+                    mouse.on_button(self._on_mouse_event, buttons=("x", "x2"), types=("down",))
                 self._hook_registered = True
         except Exception:
             pass
@@ -96,7 +94,6 @@ class TriggerManager:
         self._show = show_callback
         self._hotkey = None
         self._mouse = None
-        self._thread = None
 
     def setup(self, trigger_config):
         try:

@@ -52,6 +52,6 @@ class AppConfig:
 
     @classmethod
     def from_dict(cls, data):
-        trigger_data = data.pop("trigger", {})
+        trigger_data = data.get("trigger", {})
         trigger = TriggerConfig(**trigger_data) if trigger_data else TriggerConfig()
         return cls(trigger=trigger, **{k: v for k, v in data.items() if k in cls.__dataclass_fields__ and k != "trigger"})

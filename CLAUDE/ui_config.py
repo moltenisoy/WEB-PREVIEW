@@ -181,10 +181,10 @@ class ConfigWindow(ctk.CTkToplevel):
     def _save(self):
         try:
             trigger = TriggerConfig(
-                hotkey_enabled=self._get_value("hotkey_enabled") or False,
+                hotkey_enabled=self._get_value("hotkey_enabled") if self._get_value("hotkey_enabled") is not None else True,
                 hotkey_combo=self._get_value("hotkey_combo") or "ctrl+shift+b",
-                tray_click_enabled=self._get_value("tray_click_enabled") or True,
-                mouse_gesture_enabled=self._get_value("mouse_gesture_enabled") or False,
+                tray_click_enabled=self._get_value("tray_click_enabled") if self._get_value("tray_click_enabled") is not None else True,
+                mouse_gesture_enabled=self._get_value("mouse_gesture_enabled") if self._get_value("mouse_gesture_enabled") is not None else False,
                 mouse_gesture_type=self._get_value("mouse_gesture_type") or "double_right",
                 desktop_shortcut_enabled=True,
             )

@@ -69,11 +69,11 @@ class MainWindow(ctk.CTkToplevel):
                 font=ctk.CTkFont(size=12),
             )
             config_btn.pack(side="left", padx=5)
-            view_var = ctk.StringVar(value=self._config.view_mode)
+            self._view_var = ctk.StringVar(value=self._config.view_mode)
             view_seg = ctk.CTkSegmentedButton(
                 btn_frame,
                 values=["thumbnails", "text", "compact"],
-                variable=view_var,
+                variable=self._view_var,
                 command=self._change_view,
                 font=ctk.CTkFont(size=11),
                 height=30,
@@ -162,8 +162,6 @@ class MainWindow(ctk.CTkToplevel):
                 empty.pack(fill="both", expand=True, padx=40, pady=40)
                 self._schedule_refresh()
                 return
-            for i in self._content_frame.grid_slaves():
-                i.destroy()
             cols = c.columns
             for idx, entry in enumerate(self._entries):
                 card = SiteCard(self._content_frame, entry, c)
@@ -196,6 +194,7 @@ class MainWindow(ctk.CTkToplevel):
         try:
             self._config = get_config()
             ctk.set_appearance_mode("dark" if self._config.theme == "dark" else "light")
+            self._view_var.set(self._config.view_mode)
             self._render_cards()
         except Exception:
             pass
