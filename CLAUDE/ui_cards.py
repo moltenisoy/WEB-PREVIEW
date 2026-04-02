@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import os
 import webbrowser
 

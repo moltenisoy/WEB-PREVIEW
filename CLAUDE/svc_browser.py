@@ -1,8 +1,6 @@
 import os
-import sys
 import shutil
 import sqlite3
-import json
 import tempfile
 import winreg
 from datetime import datetime, timedelta, timezone

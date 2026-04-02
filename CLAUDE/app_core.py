@@ -1,6 +1,5 @@
 import threading
 import os
-import sys
 import customtkinter as ctk
 from PIL import Image, ImageDraw
 from storage import load_config, get_config
@@ -93,13 +92,12 @@ class BrowseDashApp:
             import pystray
             icon_image = self._create_tray_icon_image()
             menu = pystray.Menu(
-                pystray.MenuItem("Abrir BrowseDash", self._tray_show),
+                pystray.MenuItem("Abrir BrowseDash", self._tray_show, default=True),
                 pystray.MenuItem("Configuraci\u00f3n", self._tray_config),
                 pystray.Menu.SEPARATOR,
                 pystray.MenuItem("Salir", self._tray_quit),
             )
             self._tray_icon = pystray.Icon("BrowseDash", icon_image, "BrowseDash", menu)
-            self._tray_icon.on_double_click = self._tray_show
             self._tray_thread = threading.Thread(target=self._tray_icon.run, daemon=True)
             self._tray_thread.start()
         except Exception:
